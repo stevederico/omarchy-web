@@ -4,305 +4,270 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Omarchy</title>
-  <meta name="description" content="Beautiful, Fun & Opinionated Linux by DHH">
+  <meta name="description" content="Beautiful, Fun &amp; Opinionated Linux by DHH">
   <link rel="icon" href="favicon.png">
   <style>
     :root {
       --bg: #1a1b26;
-      --storm: #24283b;
-      --ink: #414868;
-      --text: #c0caf5;
-      --muted: #a9b1d6;
+      --fg: #c0caf5;
       --dim: #565f89;
-      --blue: #7aa2f7;
+      --mute: #a9b1d6;
       --green: #9ece6a;
-      --cyan: #7dcfff;
-      --aqua: #b4f9f8;
-      --red: #f7768e;
-      --wall: url(theme-tokyo-night-oled.webp);
-      --bar: 34px;
-      --gap: 8px;
+      --blue: #7aa2f7;
+      --pill: #7aa2f7;
+      --inactive: #595959aa;
+      --bar-h: 28px;
+      --gap-out: 10px;
+      --gap-in: 8px;
+      --wall: url(wall.jpg);
     }
-    html[data-theme="flexoki"] {
-      --bg: #100f0f; --storm: #1c1b1a; --ink: #343331; --text: #cecdc3;
-      --muted: #b7b5a9; --dim: #6f6e69; --blue: #da702c; --green: #879a39;
-      --cyan: #3aa99f; --aqua: #d0d6b5; --red: #d14d41;
-      --wall: url(theme-flexoki-dark.webp);
-    }
-    html[data-theme="evergarden"] {
-      --bg: #1d2426; --storm: #232c2e; --ink: #3c4a4c; --text: #d9e4dc;
-      --muted: #b5c4ba; --dim: #6b7f74; --blue: #7aa2a5; --green: #96c7a3;
-      --cyan: #9dd6c3; --aqua: #d5f0e2; --red: #e07a7a;
-      --wall: url(theme-evergarden.webp);
-    }
-    html[data-theme="rose"] {
-      --bg: #232136; --storm: #2a273f; --ink: #44415a; --text: #e0def4;
-      --muted: #c4c0e3; --dim: #6e6a86; --blue: #9ccfd8; --green: #c4a7e7;
-      --cyan: #ea9a97; --aqua: #f6c177; --red: #eb6f92;
-      --wall: url(theme-rose-pine-moon.webp);
-    }
+    html[data-theme="flexoki"] { --bg:#100f0f; --fg:#cecdc3; --dim:#6f6e69; --mute:#b7b5a9; --green:#879a39; --blue:#da702c; --pill:#da702c; --wall:url(theme-flexoki-dark.webp); }
+    html[data-theme="evergarden"] { --bg:#1d2426; --fg:#d9e4dc; --dim:#6b7f74; --mute:#b5c4ba; --green:#96c7a3; --blue:#7aa2a5; --pill:#7aa2a5; --wall:url(theme-evergarden.webp); }
+    html[data-theme="rose"] { --bg:#232136; --fg:#e0def4; --dim:#6e6a86; --mute:#c4c0e3; --green:#c4a7e7; --blue:#9ccfd8; --pill:#9ccfd8; --wall:url(theme-rose-pine-moon.webp); }
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); color: var(--text); font: 13px/1.4 ui-monospace, "SF Mono", Menlo, monospace; }
+    html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); color: var(--fg); font: 13px/1.35 ui-monospace, "JetBrains Mono", Menlo, monospace; }
     a { color: var(--blue); }
-    a:hover { color: var(--aqua); }
-    :focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+    :focus-visible { outline: 1px solid var(--green); }
     .skip { position: absolute; left: -999px; }
-    .skip:focus { left: 8px; top: 8px; z-index: 20; background: var(--green); color: var(--bg); padding: 6px 10px; }
+    .skip:focus { left: 8px; top: 4px; z-index: 20; background: var(--green); color: #000; }
     .bar {
-      height: var(--bar); display: flex; align-items: center; gap: 10px;
-      padding: 0 10px; position: relative; z-index: 5;
-      background: color-mix(in srgb, var(--bg) 88%, transparent);
-      border-bottom: 1px solid var(--ink); user-select: none;
+      height: var(--bar-h); display: flex; align-items: center; gap: 10px;
+      padding: 0 10px; position: relative; z-index: 4;
+      background: #16161e; color: var(--mute); user-select: none;
     }
     .logo {
-      background: none; border: 0; color: var(--cyan); font: inherit; font-weight: 700;
-      letter-spacing: .12em; text-transform: lowercase; cursor: pointer; padding: 4px 6px;
+      width: 18px; height: 18px; padding: 0; border: 0; background: none; cursor: pointer; color: var(--green);
     }
-    .logo:hover { color: var(--aqua); }
-    .ws { display: flex; gap: 2px; }
-    .ws button {
-      background: none; border: 0; color: var(--dim); font: inherit; min-width: 22px; height: 22px;
-      cursor: pointer; border-radius: 4px;
-    }
-    .ws button[aria-current="true"], .ws button:hover { color: var(--bg); background: var(--blue); }
-    .hint { color: var(--dim); margin-left: 8px; }
-    .hint kbd { color: var(--cyan); font: inherit; }
-    .clock { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
-    .tray { display: flex; gap: 10px; color: var(--muted); }
-    .tray span { opacity: .85; }
-    #stage { position: absolute; inset: var(--bar) 0 0 0; overflow: auto; }
+    .logo svg { display: block; width: 16px; height: 16px; }
+    .ws { display: flex; gap: 8px; font-size: 12px; }
+    .ws button { background: none; border: 0; color: var(--dim); font: inherit; padding: 0; cursor: pointer; }
+    .ws button[aria-current="true"] { color: #fff; }
+    .clock { position: absolute; left: 50%; transform: translateX(-50%); color: var(--mute); font-size: 12px; }
+    .tray { margin-left: auto; display: flex; gap: 10px; align-items: center; color: var(--mute); }
+    .tray svg { width: 14px; height: 14px; display: block; }
+    #stage { position: absolute; inset: var(--bar-h) 0 0 0; overflow: auto; }
     #stage::before {
-      content: ""; position: absolute; inset: 0; background: var(--wall) center/cover;
-      opacity: .28; z-index: 0;
+      content: ""; position: absolute; inset: 0; background: var(--wall) center/cover; z-index: 0;
     }
     .win {
-      position: absolute; top: 0; left: 0; contain: strict; overflow: hidden;
-      background: var(--storm); border: 2px solid var(--ink); border-radius: 5px;
-      will-change: transform; z-index: 1;
-      transition: transform .12s cubic-bezier(.33,1,.68,1), width .12s cubic-bezier(.33,1,.68,1), height .12s cubic-bezier(.33,1,.68,1);
+      position: absolute; top: 0; left: 0; contain: strict; overflow: hidden; z-index: 1;
+      border: 2px solid var(--inactive); border-radius: 0; background: var(--bg);
+      will-change: transform;
+      transition: transform .12s cubic-bezier(.23,1,.32,1), width .12s cubic-bezier(.23,1,.32,1), height .12s cubic-bezier(.23,1,.32,1);
     }
-    .win.on { border-color: var(--blue); z-index: 2; }
+    .win.on {
+      border-color: transparent;
+      background:
+        linear-gradient(var(--bg), var(--bg)) padding-box,
+        linear-gradient(45deg, #33ccff, #00ff99) border-box;
+      z-index: 2;
+    }
     .win.gone { visibility: hidden; pointer-events: none; content-visibility: hidden; }
-    .pad { padding: 18px 18px 16px; height: 100%; overflow: auto; }
-    .kicker { color: var(--green); letter-spacing: .12em; text-transform: uppercase; font-size: 11px; margin: 0 0 10px; }
-    h1 { font-size: 22px; margin: 0; color: #fff; line-height: 1.2; }
-    .by { color: var(--muted); margin: 8px 0 0; }
-    .lede { margin: 14px 0 0; }
-    .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 14px;
-      border-radius: 6px; font: inherit; font-weight: 700; text-decoration: none; border: 1px solid transparent; cursor: pointer;
-    }
-    .btn-go { background: var(--green); color: var(--bg); }
-    .btn-go:hover { background: var(--aqua); color: var(--bg); }
-    .btn-ghost { background: none; color: var(--text); border-color: var(--ink); }
-    .btn-ghost:hover { border-color: var(--blue); color: var(--cyan); }
-    .sha { margin-top: 18px; color: var(--dim); font-size: 11px; }
-    .sha code { display: block; color: var(--muted); word-break: break-all; margin-top: 4px; }
-    .sha button { background: none; border: 0; color: var(--blue); font: inherit; cursor: pointer; padding: 0; }
-    .term { height: 100%; margin: 0; padding: 14px 16px; white-space: pre-wrap; color: var(--text); }
-    .term .p { color: var(--green); }
-    .term .c { color: var(--cyan); }
-    .blink { display: inline-block; width: 7px; height: 13px; background: var(--text); vertical-align: -1px; animation: blink 1s step-end infinite; }
+    .inner { height: 100%; background: var(--bg); overflow: hidden; display: flex; flex-direction: column; }
+    .nvim { display: grid; grid-template-columns: 44px 1fr; height: 100%; font-size: 12px; }
+    .ln { background: #16161e; color: var(--dim); padding: 10px 8px; text-align: right; user-select: none; }
+    .nv { padding: 10px 12px; overflow: auto; }
+    .nv .c { color: var(--dim); }
+    .nv .k { color: #bb9af7; }
+    .nv .s { color: var(--green); }
+    .nv .st { position: absolute; left: 0; right: 0; bottom: 0; height: 22px; background: #7aa2f7; color: #1a1b26; display: flex; align-items: center; padding: 0 10px; font-size: 11px; font-weight: 600; }
+    /* terminal */
+    .term { margin: 0; padding: 12px 14px; height: 100%; background: #1a1b26; color: var(--fg); white-space: pre-wrap; }
+    .term .a { color: #f7768e; } .term .b { color: #bb9af7; font-style: italic; }
+    .caret { display: inline-block; width: 8px; height: 14px; background: var(--fg); vertical-align: -2px; animation: blink 1s step-end infinite; }
     @keyframes blink { 50% { opacity: 0; } }
-    .facade, .facade iframe { width: 100%; height: 100%; border: 0; display: block; }
-    .facade { padding: 0; cursor: pointer; background: #000; position: relative; }
-    .facade img { width: 100%; height: 100%; object-fit: cover; }
-    .facade i { position: absolute; inset: 0; margin: auto; width: 58px; height: 40px; background: var(--red); border-radius: 10px; pointer-events: none; }
-    .facade i::after { content: ""; position: absolute; left: 23px; top: 12px; border: 8px solid transparent; border-left: 14px solid #fff; }
-    .shot { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px; }
-    .chip {
-      display: inline-flex; align-items: center; height: 34px; padding: 0 12px;
-      border: 1px solid var(--ink); border-radius: 6px; color: var(--text); text-decoration: none; font-weight: 600;
-    }
-    .chip:hover { border-color: var(--blue); color: var(--cyan); }
+    /* files */
+    .files { display: grid; grid-template-columns: 160px 1fr; height: 100%; font-size: 12px; }
+    .fs { background: #16161e; padding: 10px 8px; color: var(--mute); }
+    .fs div { padding: 5px 8px; border-radius: 4px; }
+    .fs .on { background: #33467c; color: #fff; }
+    .fl { padding: 8px 12px; }
+    .fl row, .fl .r { display: grid; grid-template-columns: 1fr 80px; padding: 6px 4px; border-bottom: 1px solid #222; }
+    .fl .hd { color: var(--dim); }
+    /* btop */
+    .btop { padding: 10px; font-size: 11px; color: var(--mute); height: 100%; overflow: hidden; }
+    .btop b { color: var(--green); font-weight: 600; }
+    .bars { display: grid; gap: 4px; margin: 8px 0 12px; }
+    .bars i { display: block; height: 8px; background: linear-gradient(90deg, #7aa2f7, #9ece6a); width: var(--w, 40%); }
+    .shot { width: 100%; height: 100%; object-fit: cover; cursor: pointer; display: block; }
+    .facade { position: relative; width: 100%; height: 100%; padding: 0; border: 0; background: #000; cursor: pointer; }
+    .facade img, .facade iframe { width: 100%; height: 100%; object-fit: cover; border: 0; display: block; }
+    .facade i { position: absolute; inset: 0; margin: auto; width: 68px; height: 48px; background: #f00; border-radius: 10px; pointer-events: none; }
+    .facade i::after { content: ""; position: absolute; left: 26px; top: 14px; border: 10px solid transparent; border-left: 18px solid #fff; }
     .menu[hidden], .keys[hidden] { display: none !important; }
     .menu, .keys {
-      position: fixed; inset: 0; z-index: 10; display: grid; place-items: center;
-      background: rgb(26 27 38 / .45); opacity: 0; pointer-events: none;
-      transform: translate3d(0, 6px, 0); transition: opacity .12s, transform .12s;
+      position: fixed; inset: var(--bar-h) 0 0 0; z-index: 10; display: grid; place-items: center;
+      background: transparent;
     }
-    .menu.open, .keys.open { opacity: 1; pointer-events: auto; transform: none; }
-    .panel {
-      width: min(420px, calc(100vw - 24px)); background: var(--storm); border: 1px solid var(--ink);
-      border-radius: 8px; overflow: hidden; box-shadow: 0 18px 50px rgb(0 0 0 / .45);
+    .card {
+      width: min(280px, calc(100vw - 24px)); background: #2a2924;
+      border: 1px solid #d4c7a5; color: #e8e0d0;
     }
-    #q {
-      width: 100%; border: 0; border-bottom: 1px solid var(--ink); background: transparent;
-      color: var(--text); font: inherit; padding: 12px 14px; outline: none;
-    }
-    #list { list-style: none; margin: 0; padding: 6px; max-height: 50vh; overflow: auto; }
-    #list li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 10px; border-radius: 5px; cursor: pointer; }
-    #list li[aria-selected="true"], #list li:hover { background: var(--ink); }
-    #list .sub { color: var(--dim); }
-    .keys .panel { padding: 16px 18px 18px; width: min(520px, calc(100vw - 24px)); }
-    .keys h2 { margin: 0 0 10px; font-size: 14px; }
-    .keys table { width: 100%; border-collapse: collapse; }
-    .keys td { padding: 5px 0; vertical-align: top; }
-    .keys td:first-child { color: var(--cyan); white-space: nowrap; padding-right: 16px; }
-    @media (max-width: 720px) {
-      .hint, .tray { display: none; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .win, .menu, .keys, .blink { transition: none; animation: none; }
-    }
+    .go { padding: 14px 16px 6px; opacity: .55; font-size: 14px; color: #e8e0d0; }
+    .go.has { opacity: 1; }
+    #list { list-style: none; margin: 0; padding: 4px 8px 10px; max-height: 52vh; overflow: auto; }
+    #list li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; cursor: pointer; color: #e8e0d0; }
+    #list li[aria-selected="true"] { background: #3d3c36; }
+    #list .ic { width: 22px; text-align: center; opacity: .9; }
+    #list .ch { margin-left: auto; opacity: .36; }
+    .keys .card, .about .card { padding: 14px 16px 16px; width: min(520px, calc(100vw - 24px)); }
+    .about[hidden] { display: none !important; }
+    .about { position: fixed; inset: var(--bar-h) 0 0 0; z-index: 10; display: grid; place-items: center; }
+    .about .card { display: grid; grid-template-columns: 180px 1fr; gap: 18px; background: #2a2924; border: 1px solid #d4c7a5; color: #e8e0d0; }
+    .maze { width: 160px; height: 160px; background:
+      conic-gradient(from 90deg at 50% 50%, #9ece6a 0 25%, transparent 0 50%, #9ece6a 0 75%, transparent 0);
+      mask: radial-gradient(circle at 50% 50%, transparent 28%, #000 29% 42%, transparent 43% 58%, #000 59%);
+      background-color: #9ece6a; }
+    .keys h2 { margin: 0 0 8px; font-size: 14px; }
+    .keys td { padding: 4px 0; }
+    .keys td:first-child { color: var(--green); padding-right: 14px; white-space: nowrap; }
+    @media (max-width: 720px) { .clock { position: static; transform: none; margin-left: auto; } .tray { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .win, .caret { transition: none; animation: none; } }
   </style>
 </head>
 <body>
   <a class="skip" href="#stage">Skip To Content</a>
   <header class="bar">
-    <button class="logo" id="logo" type="button" aria-haspopup="dialog" aria-controls="menu">omarchy</button>
+    <button class="logo" id="logo" type="button" aria-label="Omarchy menu" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 3 7v10l9 5 9-5V7l-9-5zm0 2.2 6.5 3.6v8.4L12 19.8 5.5 16.2V7.8L12 4.2zM8 9h8v2H8V9zm0 4h5v2H8v-2z"/></svg>
+    </button>
     <div class="ws" role="tablist" aria-label="Workspaces">
       <button type="button" data-ws="0" aria-current="true">1</button>
       <button type="button" data-ws="1">2</button>
       <button type="button" data-ws="2">3</button>
       <button type="button" data-ws="3">4</button>
     </div>
-    <span class="hint"><kbd>/</kbd> or <kbd>Ctrl+Space</kbd> menu</span>
     <div class="clock" id="clock"></div>
-    <div class="tray" aria-hidden="true"><span>vol</span><span>wlan</span><span>100%</span></div>
+    <div class="tray" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a9 9 0 0 0-9 9h2a7 7 0 0 1 7-7 7 7 0 0 1 7 7h2a9 9 0 0 0-9-9zm0 4a5 5 0 0 0-5 5h2a3 3 0 0 1 3-3 3 3 0 0 1 3 3h2a5 5 0 0 0-5-5zm0 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 9v6h4l5 4V5L9 9H5zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M16 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm6 3v4h-2v-4h2z"/></svg>
+    </div>
   </header>
   <main id="stage"></main>
   <div class="menu" id="menu" role="dialog" aria-label="Omarchy menu" hidden>
-    <div class="panel">
-      <input id="q" placeholder="Search" autocomplete="off" spellcheck="false">
+    <div class="card">
+      <div class="go" id="go">Go…</div>
       <ul id="list"></ul>
     </div>
   </div>
-  <div class="keys" id="keys" role="dialog" aria-label="Hotkeys" hidden>
-    <div class="panel">
-      <h2>Hotkeys</h2>
+  <div class="about" id="about" role="dialog" aria-label="About" hidden>
+    <div class="card">
+      <div class="maze" aria-hidden="true"></div>
+      <div>
+        <p>OS: Omarchy 4.0.1 (Quattro)</p>
+        <p>Hyprland + Quickshell + Arch</p>
+        <p>JetBrainsMono Nerd Font</p>
+        <p><a href="https://omarchy.org/manual/">The Manual</a> · <a href="https://iso.omarchy.org/omarchy-4.0.1.iso">Download ISO</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="keys" id="keys" role="dialog" aria-label="Keybindings" hidden>
+    <div class="card">
+      <h2>Keybindings</h2>
       <table>
-        <tr><td>Super+Space / /</td><td>Omarchy menu</td></tr>
+        <tr><td>Super+Space</td><td>Omarchy menu</td></tr>
         <tr><td>Super+Return</td><td>Terminal</td></tr>
-        <tr><td>Super+Shift+Return</td><td>Manual</td></tr>
+        <tr><td>Super+Shift+Return</td><td>Browser</td></tr>
         <tr><td>Super+J</td><td>Flip split</td></tr>
         <tr><td>Super+Arrow</td><td>Focus</td></tr>
         <tr><td>Super+W / Q</td><td>Close</td></tr>
         <tr><td>Super+F</td><td>Fullscreen</td></tr>
         <tr><td>Super+1..4</td><td>Workspace</td></tr>
-        <tr><td>Super+K / Esc</td><td>This sheet / close</td></tr>
+        <tr><td>Super+K</td><td>This sheet</td></tr>
       </table>
     </div>
   </div>
   <script>
-    const GAP = 8;
+    const GAP = 8, GAPO = 10;
     const ISO = 'https://iso.omarchy.org/omarchy-4.0.1.iso';
-    const SHA = '69cbb4e10d98ad831c3c9f245b5757a9d1fedfd0c9592780e977d6f950dea8c3';
     const stage = document.getElementById('stage');
     const listEl = document.getElementById('list');
-    const qEl = document.getElementById('q');
+    const goEl = document.getElementById('go');
     const menuEl = document.getElementById('menu');
     const keysEl = document.getElementById('keys');
     const clockEl = document.getElementById('clock');
-
     let idn = 1;
     const leaf = (app) => ({ t: 'l', id: idn++, app });
     const split = (dir, a, b, ratio) => ({ t: 's', dir, a, b, ratio: ratio || 0.5 });
 
     const html = {
-      video: () => `<button class="facade" data-yt="F7fe9pa8OeE" aria-label="Play Omarchy Quattro"><img src="quattro.webp" alt="Omarchy Quattro" width="1280" height="720"><i></i></button>`,
-      chuck: () => `<button class="facade" data-yt="9SDkU5VDQEQ" aria-label="Play NetworkChuck"><img src="networkchuck.webp" alt="NetworkChuck on Omarchy" width="1280" height="720" loading="lazy"><i></i></button>`,
-      install: () => `<div class="pad"><p class="kicker">Quattro 4.0.1</p><h1>Beautiful, Fun &amp; Opinionated Linux</h1><p class="by">by <a href="https://dhh.dk">DHH</a></p><p class="lede">An omakase desktop on Arch, Hyprland, and Quickshell. Neovim to Spotify. Hell, even a Winamp-style player.</p><div class="row"><a class="btn btn-go" href="${ISO}">Download ISO</a><a class="btn btn-ghost" href="https://omarchy.org/manual/">Read The Manual</a></div><p class="sha">SHA256 <button type="button" id="copy-sha">Copy</button><code>${SHA}</code></p></div>`,
-      term: () => `<pre class="term"><span class="p">sd@omarchy</span> <span class="c">~</span>\n<span class="p">❯</span> omarchy --version\nOmarchy 4.0.1 (Quattro)\n<span class="p">❯</span> <span class="c"># Super+Space for the menu</span>\n<span class="p">❯</span> <span class="blink"></span></pre>`,
-      manual: () => `<div class="pad"><p class="kicker">Manual</p><h1>Welcome to Omarchy</h1><p class="lede">Omarchy is an omakase Linux distribution based on Arch, the tiling window manager Hyprland, and the desktop construction-kit Quickshell. It ships with everything a modern, savvy computer user needs to be productive immediately.</p><p class="lede">This is not a grab bag of packages. It is a complete system. A beautiful system is a motivating system.</p><div class="row"><a class="btn btn-go" href="https://omarchy.org/manual/">Open The Manual</a></div></div>`,
-      more: () => `<div class="chips">
-        <a class="chip" href="https://github.com/omacom/omarchy">GitHub</a>
-        <a class="chip" href="https://omarchyplugins.com/">Plugins</a>
-        <a class="chip" href="https://omarchy.org/news/">News</a>
-        <a class="chip" href="https://discord.gg/tXFUdasqhY">Discord</a>
-        <a class="chip" href="https://omarchy.org/meetups/">Meetups</a>
-        <a class="chip" href="https://omarchy.org/teams/">Teams</a>
-        <a class="chip" href="https://omarchy.org/patrons/">Patrons</a>
-        <a class="chip" href="https://omarchy.org/workstations/">Workstations</a>
-        <a class="chip" href="https://omarchy.org/security/">Security</a>
-        <a class="chip" href="https://supply.37signals.com/collections/omarchy">Merch</a>
-        <a class="chip" href="https://omarchy.org/air/">AIR</a>
-        <a class="chip" href="https://omarchy.org/sponsorships/">Sponsorships</a>
-      </div>`,
+      nvim: () => `<div class="inner" style="position:relative"><div class="nvim"><div class="ln">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div><div class="nv"><span class="c">-- boot.iso</span><br><span class="k">local</span> iso = <span class="s">'${ISO}'</span><br><br><span class="c">-- Super+Space  menu</span><br><span class="c">-- Super+Return  terminal</span><br><span class="c">-- Super+J  flip split</span></div></div><div class="st">NORMAL  boot.iso  utf-8  lua</div></div>`,
+      term: () => `<div class="inner"><pre class="term"><span class="a">omarchy</span> <span class="b">quattro</span> • ❯ curl -O ${ISO}\n<span class="caret"></span></pre></div>`,
+      files: () => `<div class="inner"><div class="files"><div class="fs"><div class="on">Home</div><div>Documents</div><div>Downloads</div><div>Pictures</div><div>Projects</div></div><div class="fl"><div class="r hd"><span>Name</span><span>Items</span></div><div class="r"><span>Documents</span><span>5</span></div><div class="r"><span>Downloads</span><span>14</span></div><div class="r"><span>omarchy</span><span>22</span></div><div class="r"><span>Pictures</span><span>303</span></div></div></div></div>`,
+      btop: () => `<div class="inner"><div class="btop"><div><b>cpu</b> menu preset *</div><div class="bars"><i style="--w:38%"></i><i style="--w:22%"></i><i style="--w:61%"></i><i style="--w:14%"></i><i style="--w:47%"></i><i style="--w:9%"></i><i style="--w:33%"></i><i style="--w:18%"></i></div><div>Load avg: 0.47 0.21 0.22</div><div style="margin-top:10px"><b>mem</b> 11.8 GiB  ·  used 4.6 GiB</div><div class="bars"><i style="--w:42%"></i></div><div><b>proc</b>  hyprland · foot · chromium · nvim</div></div></div>`,
       tokyo: () => `<img class="shot" data-theme="tokyo" src="theme-tokyo-night-oled.webp" alt="Tokyo Night" width="1280" height="720" loading="lazy">`,
       flexoki: () => `<img class="shot" data-theme="flexoki" src="theme-flexoki-dark.webp" alt="Flexoki Dark" width="1280" height="720" loading="lazy">`,
       evergarden: () => `<img class="shot" data-theme="evergarden" src="theme-evergarden.webp" alt="Evergarden" width="1280" height="720" loading="lazy">`,
-      rose: () => `<img class="shot" data-theme="rose" src="theme-rose-pine-moon.webp" alt="Rose Pine Moon" width="1280" height="720" loading="lazy">`
+      rose: () => `<img class="shot" data-theme="rose" src="theme-rose-pine-moon.webp" alt="Rose Pine Moon" width="1280" height="720" loading="lazy">`,
+      video: () => `<button class="facade" data-yt="F7fe9pa8OeE" aria-label="Play Omarchy Quattro"><img src="quattro.webp" alt="" width="1280" height="720"><i></i></button>`,
+      chuck: () => `<button class="facade" data-yt="9SDkU5VDQEQ" aria-label="Play NetworkChuck"><img src="networkchuck.webp" alt="" width="1280" height="720" loading="lazy"><i></i></button>`
     };
 
     const MENU = [
-      { label: 'Install', children: [{ label: 'Download ISO', act: 'iso' }] },
-      { label: 'Style', children: [
-        { label: 'Tokyo Night', act: 'theme', v: 'tokyo' },
-        { label: 'Flexoki Dark', act: 'theme', v: 'flexoki' },
-        { label: 'Evergarden', act: 'theme', v: 'evergarden' },
-        { label: 'Rose Pine Moon', act: 'theme', v: 'rose' }
+      { label: 'Apps', ic: '⊞', act: 'spawn', v: 'nvim' },
+      { label: 'Learn', ic: '◎', children: [
+        { label: 'Keybindings', act: 'keys' },
+        { label: 'Omarchy', act: 'url', v: 'https://omarchy.org/manual/' },
+        { label: 'Hyprland', act: 'url', v: 'https://wiki.hypr.land/' },
+        { label: 'Community', act: 'url', v: 'https://discord.gg/tXFUdasqhY' }
       ]},
-      { label: 'Learn', children: [
-        { label: 'Manual', act: 'url', v: 'https://omarchy.org/manual/' },
-        { label: 'News', act: 'url', v: 'https://omarchy.org/news/' }
+      { label: 'Trigger', ic: '✦', children: [
+        { label: 'Keybindings', act: 'keys' }
       ]},
-      { label: 'Code', children: [
-        { label: 'GitHub', act: 'url', v: 'https://github.com/omacom/omarchy' },
-        { label: 'Plugins', act: 'url', v: 'https://omarchyplugins.com/' }
+      { label: 'Style', ic: '✎', children: [
+        { label: 'Theme', children: [
+          { label: 'Tokyo Night', act: 'theme', v: 'tokyo' },
+          { label: 'Flexoki Dark', act: 'theme', v: 'flexoki' },
+          { label: 'Evergarden', act: 'theme', v: 'evergarden' },
+          { label: 'Rose Pine Moon', act: 'theme', v: 'rose' }
+        ]},
+        { label: 'Background', act: 'noop' },
+        { label: 'Font', act: 'noop' },
+        { label: 'Menu Bar', act: 'noop' },
+        { label: 'Hyprland', act: 'url', v: 'https://wiki.hypr.land/' },
+        { label: 'Screensaver', act: 'noop' },
+        { label: 'About', act: 'about' }
       ]},
-      { label: 'Machine', children: [
+      { label: 'Setup', ic: '⚙', children: [
         { label: 'Workstations', act: 'url', v: 'https://omarchy.org/workstations/' },
         { label: 'Security', act: 'url', v: 'https://omarchy.org/security/' }
       ]},
-      { label: 'People', children: [
-        { label: 'Discord', act: 'url', v: 'https://discord.gg/tXFUdasqhY' },
-        { label: 'Meetups', act: 'url', v: 'https://omarchy.org/meetups/' },
-        { label: 'Teams', act: 'url', v: 'https://omarchy.org/teams/' },
-        { label: 'Patrons', act: 'url', v: 'https://omarchy.org/patrons/' },
-        { label: 'AIR', act: 'url', v: 'https://omarchy.org/air/' },
-        { label: 'Merch', act: 'url', v: 'https://supply.37signals.com/collections/omarchy' },
-        { label: 'Sponsorships', act: 'url', v: 'https://omarchy.org/sponsorships/' }
+      { label: 'Install', ic: '⬇', children: [
+        { label: 'Download ISO', act: 'iso' },
+        { label: 'Plugins', act: 'url', v: 'https://omarchyplugins.com/' }
+      ]},
+      { label: 'Remove', ic: '⌫', children: [] },
+      { label: 'Update', ic: '↻', children: [
+        { label: 'News', act: 'url', v: 'https://omarchy.org/news/' }
+      ]},
+      { label: 'About', ic: 'ℹ', act: 'about' },
+      { label: 'System', ic: '⏻', children: [
+        { label: 'Lock', act: 'noop' },
+        { label: 'Screensaver', act: 'noop' },
+        { label: 'Suspend', act: 'noop' },
+        { label: 'Restart', act: 'noop' },
+        { label: 'Shutdown', act: 'noop' }
       ]}
     ];
 
     const workspaces = [
-      { tree: split('col', leaf('video'), split('row', leaf('term'), leaf('install'), 0.5), 0.58), focus: 0, wins: new Map(), full: false },
-      { tree: split('col', split('row', leaf('tokyo'), leaf('flexoki')), split('row', leaf('evergarden'), leaf('rose')), 0.5), focus: 0, wins: new Map(), full: false },
-      { tree: split('row', leaf('video'), leaf('chuck'), 0.5), focus: 0, wins: new Map(), full: false },
-      { tree: split('row', leaf('manual'), leaf('more'), 0.58), focus: 0, wins: new Map(), full: false }
+      { tree: null, focus: 0, wins: new Map(), full: false },
+      { tree: null, focus: 0, wins: new Map(), full: false },
+      { tree: null, focus: 0, wins: new Map(), full: false },
+      { tree: null, focus: 0, wins: new Map(), full: false }
     ];
-    let wi = 0;
-    let raf = 0;
-    let menuOpen = false;
-    let keysOpen = false;
-    let path = [];
-    let filter = '';
-    let sel = 0;
-
+    let wi = 0, raf = 0, menuOpen = false, keysOpen = false, path = [], filter = '', sel = 0;
     function ws() { return workspaces[wi]; }
-
-    function walk(n, fn) {
-      if (n.t === 'l') fn(n);
-      else { walk(n.a, fn); walk(n.b, fn); }
-    }
-
-    function findLeaf(n, id) {
-      if (n.t === 'l') return n.id === id ? n : null;
-      return findLeaf(n.a, id) || findLeaf(n.b, id);
-    }
-
-    function findApp(n, app) {
-      if (n.t === 'l') return n.app === app ? n : null;
-      return findApp(n.a, app) || findApp(n.b, app);
-    }
-
-    function parentOf(n, id, p) {
-      if (n.t === 'l') return n.id === id ? p : null;
-      return parentOf(n.a, id, n) || parentOf(n.b, id, n);
-    }
-
+    function walk(n, fn) { if (!n) return; if (n.t === 'l') fn(n); else { walk(n.a, fn); walk(n.b, fn); } }
+    function findLeaf(n, id) { if (!n) return null; if (n.t === 'l') return n.id === id ? n : null; return findLeaf(n.a, id) || findLeaf(n.b, id); }
+    function findApp(n, app) { if (!n) return null; if (n.t === 'l') return n.app === app ? n : null; return findApp(n.a, app) || findApp(n.b, app); }
+    function parentOf(n, id, p) { if (!n) return null; if (n.t === 'l') return n.id === id ? p : null; return parentOf(n.a, id, n) || parentOf(n.b, id, n); }
     function replaceNode(root, target, next) {
       if (root === target) return next;
-      if (root.t === 's') {
-        root.a = replaceNode(root.a, target, next);
-        root.b = replaceNode(root.b, target, next);
-      }
+      if (root.t === 's') { root.a = replaceNode(root.a, target, next); root.b = replaceNode(root.b, target, next); }
       return root;
     }
-
     function layout(n, r, out) {
       if (n.t === 'l') { out.push({ id: n.id, app: n.app, r }); return; }
       if (n.dir === 'row') {
@@ -315,49 +280,34 @@
         layout(n.b, { x: r.x, y: r.y + h + GAP, w: r.w, h: r.h - h - GAP }, out);
       }
     }
-
     function mountLeaf(n, bag) {
       const el = document.createElement('section');
       el.className = 'win gone';
       el.dataset.id = String(n.id);
-      el.innerHTML = (html[n.app] || html.more)();
+      el.innerHTML = (html[n.app] || html.term)();
       el.addEventListener('mousedown', () => { ws().focus = n.id; paint(); });
       stage.appendChild(el);
       bag.set(n.id, el);
     }
-
-    function mountWs(w) {
-      walk(w.tree, (n) => mountLeaf(n, w.wins));
-      const first = [...w.wins.keys()][0];
-      w.focus = first;
-    }
-
-    workspaces.forEach(mountWs);
-
     function paint() {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         raf = 0;
         const w = ws();
         const b = stage.getBoundingClientRect();
-        const area = { x: GAP, y: GAP, w: b.width - GAP * 2, h: b.height - GAP * 2 };
+        const area = { x: GAPO, y: GAPO, w: b.width - GAPO * 2, h: b.height - GAPO * 2 };
         const boxes = [];
-        if (w.full) {
+        if (w.tree && w.full) {
           const n = findLeaf(w.tree, w.focus);
           if (n) boxes.push({ id: n.id, app: n.app, r: area });
-        } else if (b.width < 720) {
+        } else if (w.tree && b.width < 720) {
           const leaves = [];
           walk(w.tree, (n) => leaves.push(n));
-          const h = Math.max(b.height * 0.55, 260);
-          leaves.forEach((n, i) => {
-            boxes.push({ id: n.id, app: n.app, r: { x: GAP, y: GAP + i * (h + GAP), w: b.width - GAP * 2, h } });
-          });
-        } else layout(w.tree, area, boxes);
+          const h = Math.max(b.height * 0.55, 280);
+          leaves.forEach((n, i) => boxes.push({ id: n.id, app: n.app, r: { x: GAPO, y: GAPO + i * (h + GAP), w: b.width - GAPO * 2, h } }));
+        } else if (w.tree) layout(w.tree, area, boxes);
         workspaces.forEach((other, i) => {
-          other.wins.forEach((el, id) => {
-            const on = i === wi && boxes.some((x) => x.id === id);
-            el.classList.toggle('gone', !on);
-          });
+          other.wins.forEach((el, id) => el.classList.toggle('gone', !(i === wi && boxes.some((x) => x.id === id))));
         });
         boxes.forEach((box) => {
           const el = w.wins.get(box.id);
@@ -366,47 +316,40 @@
           el.style.height = box.r.h + 'px';
           el.classList.toggle('on', box.id === w.focus);
         });
-        document.querySelectorAll('.ws button').forEach((btn, i) => {
-          btn.setAttribute('aria-current', i === wi ? 'true' : 'false');
-        });
+        document.querySelectorAll('.ws button').forEach((btn, i) => btn.setAttribute('aria-current', i === wi ? 'true' : 'false'));
       });
     }
-
-    function setWs(i) {
-      wi = i;
-      closeOverlays();
-      paint();
-    }
-
+    function setWs(i) { wi = i; closeOverlays(); paint(); }
     function spawn(app) {
       const w = ws();
-      const exists = findApp(w.tree, app);
+      const exists = w.tree && findApp(w.tree, app);
       if (exists) { w.focus = exists.id; w.full = false; paint(); return; }
-      const focused = findLeaf(w.tree, w.focus);
+      const focused = w.tree && findLeaf(w.tree, w.focus);
       const neu = leaf(app);
       mountLeaf(neu, w.wins);
-      if (!focused) {
-        w.tree = neu;
-        w.focus = neu.id;
-        paint();
-        return;
-      }
+      if (!w.tree || !focused) { w.tree = neu; w.focus = neu.id; paint(); return; }
       const p = parentOf(w.tree, w.focus, null);
       const dir = p ? (p.dir === 'row' ? 'col' : 'row') : 'row';
       const s = split(dir, focused, neu, 0.5);
       if (!p) w.tree = s;
       else if (p.a === focused) p.a = s;
       else p.b = s;
-      w.focus = neu.id;
-      w.full = false;
-      paint();
+      w.focus = neu.id; w.full = false; paint();
     }
-
     function closeFocused() {
       const w = ws();
+      if (!w.tree) return;
       if (w.full) { w.full = false; paint(); return; }
       const p = parentOf(w.tree, w.focus, null);
-      if (!p) return;
+      if (!p) {
+        const el = w.wins.get(w.focus);
+        if (el) el.remove();
+        w.wins.delete(w.focus);
+        w.tree = null;
+        w.focus = 0;
+        paint();
+        return;
+      }
       const sib = (p.a.t === 'l' && p.a.id === w.focus) ? p.b : p.a;
       const el = w.wins.get(w.focus);
       if (el) el.remove();
@@ -415,29 +358,24 @@
       w.focus = sib.t === 'l' ? sib.id : (sib.a.t === 'l' ? sib.a.id : sib.b.id);
       paint();
     }
-
     function flip() {
-      const w = ws();
-      const p = parentOf(w.tree, w.focus, null);
+      const p = parentOf(ws().tree, ws().focus, null);
       if (!p) return;
       p.dir = p.dir === 'row' ? 'col' : 'row';
       paint();
     }
-
     function focusDir(dx, dy) {
       const w = ws();
       const b = stage.getBoundingClientRect();
       const boxes = [];
-      layout(w.tree, { x: GAP, y: GAP, w: b.width - GAP * 2, h: b.height - GAP * 2 }, boxes);
+      layout(w.tree, { x: GAPO, y: GAPO, w: b.width - GAPO * 2, h: b.height - GAPO * 2 }, boxes);
       const me = boxes.find((x) => x.id === w.focus);
       if (!me) return;
-      const mx = me.r.x + me.r.w / 2;
-      const my = me.r.y + me.r.h / 2;
+      const mx = me.r.x + me.r.w / 2, my = me.r.y + me.r.h / 2;
       let best = null, bestD = Infinity;
       boxes.forEach((box) => {
         if (box.id === w.focus) return;
-        const cx = box.r.x + box.r.w / 2 - mx;
-        const cy = box.r.y + box.r.h / 2 - my;
+        const cx = box.r.x + box.r.w / 2 - mx, cy = box.r.y + box.r.h / 2 - my;
         if (dx && cx * dx <= 4) return;
         if (dy && cy * dy <= 4) return;
         const d = Math.hypot(cx, cy);
@@ -445,42 +383,43 @@
       });
       if (best) { w.focus = best.id; paint(); }
     }
-
     function tick() {
       const d = new Date();
-      const wd = d.toLocaleDateString('en-US', { weekday: 'short' });
-      const tm = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-      clockEl.textContent = wd + ' ' + tm;
+      clockEl.textContent = d.toLocaleDateString('en-US', { weekday: 'long' }) + ' ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
     }
-    tick();
-    setInterval(tick, 1000);
+    tick(); setInterval(tick, 1000);
 
     function flatten(nodes, acc) {
-      nodes.forEach((n) => {
-        if (n.children) flatten(n.children, acc);
-        else acc.push(n);
-      });
+      nodes.forEach((n) => { if (n.children && n.children.length) flatten(n.children, acc); else acc.push(n); });
       return acc;
     }
-
     function items() {
       if (filter) {
         const q = filter.toLowerCase();
         return flatten(MENU, []).filter((n) => n.label.toLowerCase().includes(q));
       }
       let cur = MENU;
-      path.forEach((i) => { cur = cur[i].children; });
+      path.forEach((i) => { cur = cur[i].children || []; });
       return cur;
     }
-
+    function header() {
+      if (filter) return filter;
+      if (!path.length) return 'Go…';
+      let cur = MENU[path[0]];
+      for (let i = 1; i < path.length; i++) cur = cur.children[path[i]];
+      return (cur && cur.label ? cur.label : 'Go') + '…';
+    }
     function drawMenu() {
       const rows = items();
       if (sel >= rows.length) sel = Math.max(0, rows.length - 1);
+      goEl.textContent = header();
+      goEl.classList.toggle('has', !!filter);
       listEl.replaceChildren();
       rows.forEach((n, i) => {
         const li = document.createElement('li');
         li.setAttribute('aria-selected', i === sel ? 'true' : 'false');
-        li.innerHTML = '<span>' + n.label + '</span>' + (n.children ? '<span class="sub">›</span>' : '');
+        const fold = n.children && n.children.length;
+        li.innerHTML = '<span class="ic">' + (n.ic || '') + '</span><span>' + n.label + '</span>' + (fold ? '<span class="ch">›</span>' : '');
         li.addEventListener('mouseenter', () => {
           sel = i;
           [...listEl.children].forEach((el, j) => el.setAttribute('aria-selected', j === sel ? 'true' : 'false'));
@@ -489,49 +428,35 @@
         listEl.appendChild(li);
       });
     }
-
     function openMenu() {
-      menuOpen = true;
-      keysOpen = false;
-      keysEl.classList.remove('open');
-      filter = '';
-      path = [];
-      sel = 0;
-      qEl.value = '';
-      menuEl.hidden = false;
-      menuEl.classList.add('open');
+      menuOpen = true; keysOpen = false;
+      keysEl.hidden = true; keysEl.classList.remove('open');
+      filter = ''; path = []; sel = 0;
+      menuEl.hidden = false; menuEl.classList.add('open');
       drawMenu();
-      qEl.focus();
     }
-
     function closeOverlays() {
-      menuOpen = false;
-      keysOpen = false;
-      menuEl.classList.remove('open');
-      keysEl.classList.remove('open');
-      menuEl.hidden = true;
-      keysEl.hidden = true;
+      menuOpen = false; keysOpen = false;
+      menuEl.classList.remove('open'); keysEl.classList.remove('open');
+      menuEl.hidden = true; keysEl.hidden = true;
+      const about = document.getElementById('about');
+      if (about) { about.hidden = true; about.classList.remove('open'); }
     }
-
     function run(n, i) {
-      if (n.children) { path.push(i); sel = 0; filter = ''; qEl.value = ''; drawMenu(); return; }
+      if (n.children && n.children.length) { path.push(i); sel = 0; filter = ''; drawMenu(); return; }
       closeOverlays();
       if (n.act === 'iso') location.href = ISO;
       else if (n.act === 'url') location.href = n.v;
+      else if (n.act === 'spawn') spawn(n.v);
+      else if (n.act === 'keys') { keysOpen = true; keysEl.hidden = false; keysEl.classList.add('open'); }
+      else if (n.act === 'about') {
+        document.getElementById('about').hidden = false;
+        document.getElementById('about').classList.add('open');
+      }
       else if (n.act === 'theme') {
         if (n.v === 'tokyo') document.documentElement.removeAttribute('data-theme');
         else document.documentElement.setAttribute('data-theme', n.v);
-        setWs(1);
       }
-    }
-
-    function playFacade(btn) {
-      const id = btn.getAttribute('data-yt');
-      const f = document.createElement('iframe');
-      f.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
-      f.allow = 'autoplay; encrypted-media';
-      f.allowFullscreen = true;
-      btn.replaceWith(f);
     }
 
     document.getElementById('logo').addEventListener('click', openMenu);
@@ -541,54 +466,52 @@
     });
     stage.addEventListener('click', (e) => {
       const f = e.target.closest('.facade');
-      if (f && f.hasAttribute('data-yt')) playFacade(f);
+      if (f && f.hasAttribute('data-yt')) {
+        const iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/' + f.getAttribute('data-yt') + '?autoplay=1';
+        iframe.allow = 'autoplay; encrypted-media';
+        iframe.allowFullscreen = true;
+        f.replaceWith(iframe);
+      }
       const shot = e.target.closest('.shot');
       if (shot) {
         const t = shot.getAttribute('data-theme');
         if (t === 'tokyo') document.documentElement.removeAttribute('data-theme');
         else document.documentElement.setAttribute('data-theme', t);
       }
-      if (e.target.id === 'copy-sha') navigator.clipboard.writeText(SHA);
     });
     menuEl.addEventListener('mousedown', (e) => { if (e.target === menuEl) closeOverlays(); });
     keysEl.addEventListener('mousedown', (e) => { if (e.target === keysEl) closeOverlays(); });
-    qEl.addEventListener('input', () => { filter = qEl.value; sel = 0; drawMenu(); });
+    document.getElementById('about').addEventListener('mousedown', (e) => { if (e.target.id === 'about') closeOverlays(); });
 
     function superKey(e) { return e.metaKey || e.ctrlKey; }
-
     window.addEventListener('keydown', (e) => {
       if (menuOpen) {
         const rows = items();
         if (e.key === 'Escape') {
           e.preventDefault();
-          if (filter) { filter = ''; qEl.value = ''; sel = 0; drawMenu(); }
+          if (filter) { filter = ''; sel = 0; drawMenu(); }
           else if (path.length) { path.pop(); sel = 0; drawMenu(); }
           else closeOverlays();
           return;
         }
+        if (e.key === 'Backspace' && !filter) { e.preventDefault(); if (path.length) { path.pop(); sel = 0; drawMenu(); } return; }
         if (e.key === 'ArrowDown') { e.preventDefault(); sel = Math.min(rows.length - 1, sel + 1); drawMenu(); return; }
         if (e.key === 'ArrowUp') { e.preventDefault(); sel = Math.max(0, sel - 1); drawMenu(); return; }
-        if (e.key === 'Enter' && rows[sel]) { e.preventDefault(); run(rows[sel], sel); return; }
+        if ((e.key === 'Enter' || e.key === 'ArrowRight') && rows[sel]) { e.preventDefault(); run(rows[sel], sel); return; }
+        if (e.key.length === 1 && !e.metaKey && !e.ctrlKey) { filter += e.key; sel = 0; drawMenu(); e.preventDefault(); }
+        if (e.key === 'Backspace' && filter) { filter = filter.slice(0, -1); sel = 0; drawMenu(); e.preventDefault(); }
         return;
       }
       if (keysOpen && e.key === 'Escape') { e.preventDefault(); closeOverlays(); return; }
-
       const s = superKey(e);
-      if ((s && e.code === 'Space') || (e.key === '/' && e.target.tagName !== 'INPUT')) {
-        e.preventDefault();
-        openMenu();
-        return;
+      if ((s && e.code === 'Space') || (e.key === '/' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'A')) {
+        e.preventDefault(); openMenu(); return;
       }
-      if (s && e.code === 'KeyK') {
-        e.preventDefault();
-        keysOpen = !keysOpen;
-        keysEl.hidden = !keysOpen;
-        keysEl.classList.toggle('open', keysOpen);
-        return;
-      }
+      if (s && e.code === 'KeyK') { e.preventDefault(); keysOpen = !keysOpen; keysEl.hidden = !keysOpen; keysEl.classList.toggle('open', keysOpen); return; }
       if (e.key === 'Escape') { closeOverlays(); if (ws().full) { ws().full = false; paint(); } return; }
       if (!s) return;
-      if (e.code === 'Enter' && e.shiftKey) { e.preventDefault(); spawn('manual'); }
+      if (e.code === 'Enter' && e.shiftKey) { e.preventDefault(); spawn('nvim'); }
       else if (e.code === 'Enter') { e.preventDefault(); spawn('term'); }
       else if (e.code === 'KeyJ') { e.preventDefault(); flip(); }
       else if (e.code === 'KeyW' || e.code === 'KeyQ') { e.preventDefault(); closeFocused(); }
@@ -602,7 +525,6 @@
       else if (e.key === 'ArrowUp') { e.preventDefault(); focusDir(0, -1); }
       else if (e.key === 'ArrowDown') { e.preventDefault(); focusDir(0, 1); }
     });
-
     window.addEventListener('resize', paint);
     paint();
   </script>
